@@ -1,0 +1,9 @@
+.App {
+	height: 100%;
+}
+	.AppNav {
+
+	}
+	.AppContent {
+		height: calc(100% - 56px);
+	}
