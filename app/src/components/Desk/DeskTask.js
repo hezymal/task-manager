@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ButtonGroup, ListGroup } from "react-bootstrap";
+import { Button, ButtonGroup, OverlayTrigger, Popover, ListGroup, ButtonToolbar } from "react-bootstrap";
 import { Header } from "./Header";
 
 export default function DeskTask(props) {
@@ -8,14 +8,35 @@ export default function DeskTask(props) {
     return (
         <ListGroup.Item>
             <Header title={task.title}>
-                <ButtonGroup>
-                    <Button variant="outline-secondary" onClick={() => onModifyTask(task._id)}>
-                        <i className="fas fa-pen" />
+                <OverlayTrigger 
+                    trigger="click" 
+                    placement="bottom" 
+                    rootClose
+                    overlay={
+                        <Popover>
+                            <ButtonToolbar>
+                                <ButtonGroup>
+                                    <Button 
+                                        variant="outline-primary"
+                                        onClick={() => onModifyTask(task._id)}
+                                    >
+                                        <i className="fas fa-pen" />
+                                    </Button>
+                                    <Button 
+                                        variant="outline-danger"
+                                        onClick={() => onRemoveTask(task._id)}
+                                    >
+                                        <i className="fas fa-trash" />
+                                    </Button>
+                                </ButtonGroup>
+                            </ButtonToolbar>
+                        </Popover>
+                    }
+                >
+                    <Button variant="light" size="sm">
+                        <i className="fas fa-ellipsis-h" />
                     </Button>
-                    <Button variant="outline-secondary" onClick={() => onRemoveTask(task._id)}>
-                        <i className="fas fa-trash" />
-                    </Button>
-                </ButtonGroup>
+                </OverlayTrigger>
             </Header>
         </ListGroup.Item>
     );

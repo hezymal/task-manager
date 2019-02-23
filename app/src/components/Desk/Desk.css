@@ -9,18 +9,34 @@
 .DeskColumn {
     display: inline-block;
     margin: 0 10px 0 0;
-    min-width: 270px;
-    max-width: 270px;
+    min-width: 350px;
+    max-width: 350px;
     vertical-align: top;
 }
     .DeskColumn:last-child {
         margin: 0;
     }
-        
-.Header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: -8px;
-    padding-top: 4px;
-}
+    .DeskColumn .progress {
+        margin-bottom: 20px;
+    }
+        .DeskColumn .progress > .progress-bar {
+            background-color: inherit;
+        }
+    .DeskColumn .Header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .DeskColumn .DeskColumnModify {
+        margin: 0 10px 0 0;
+        color: #0088cc;
+    }
+    .DeskColumn .DeskColumnRemove {
+        margin: 0 10px 0 0;
+        color: #cc0000;
+    }
+    .DeskColumnEmptyTasks {
+        text-align: center;
+        padding: 10px 0;
+        color: #aaaaaa;
+    }

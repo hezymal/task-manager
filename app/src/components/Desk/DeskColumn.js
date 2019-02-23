@@ -1,10 +1,11 @@
 import React from "react";
-import { Button, ButtonGroup, Card, Dropdown, ListGroup } from "react-bootstrap";
+import { ProgressBar, Button, ButtonGroup, ButtonToolbar, OverlayTrigger, Popover, Card, ListGroup } from "react-bootstrap";
 import { Header } from "./Header";
 
 export default function DeskColumn(props) {
     const { 
         column, 
+        progress,
         children,
         onAddTask, 
         onModifyColumn,
@@ -15,28 +16,66 @@ export default function DeskColumn(props) {
         <div className="DeskColumn">
             <Card>
                 <Card.Header>
-                    <Header title={column.title} color={column.color}>
-                        <Dropdown as={ButtonGroup}>
-                            <Button variant="outline-secondary" onClick={() => onAddTask()}>
+                    <Header title={column.title}>
+                        <ButtonGroup>
+                            <Button 
+                                variant="outline-success"
+                                size="sm"
+                                onClick={() => onAddTask()}
+                            >
                                 <i className="fas fa-plus-circle" />
                             </Button>
-                            <Dropdown.Toggle variant="outline-secondary">
-                                <i className="fas fa-cog" />
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item onClick={() => onModifyColumn(column._id)}>
-                                    Modify column
-                                </Dropdown.Item>
-                                <Dropdown.Item onClick={() => onRemoveColumn(column._id)}>
-                                    Remove column
-                                </Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
+                            <OverlayTrigger 
+                                trigger="click" 
+                                placement="bottom" 
+                                rootClose
+                                overlay={
+                                    <Popover>
+                                        <ButtonToolbar>
+                                            <ButtonGroup>
+                                                <Button 
+                                                    variant="outline-primary"
+                                                    onClick={() => onModifyColumn(column._id)}
+                                                >
+                                                    <i className="fas fa-pen" />
+                                                </Button>
+                                                <Button 
+                                                    variant="outline-danger"
+                                                    onClick={() => onRemoveColumn(column._id)}
+                                                >
+                                                    <i className="fas fa-trash" />
+                                                </Button>
+                                            </ButtonGroup>
+                                        </ButtonToolbar>
+                                    </Popover>
+                                }
+                            >
+                                <Button variant="outline-secondary" size="sm">
+                                    <i className="fas fa-cog" />
+                                </Button>
+                            </OverlayTrigger>
+                        </ButtonGroup>
                     </Header>
                 </Card.Header>
-                <ListGroup>
-                    {children}
-                </ListGroup>
+                <Card.Body>
+                    {progress.value ? (
+                        <ProgressBar>
+                            <ProgressBar 
+                                now={progress.value}
+                                label={`${progress.count} of ${progress.totals}`}
+                                striped
+                                style={{ backgroundColor: column.color }} 
+                            />
+                        </ProgressBar>
+                    ) : (
+                        <div className="DeskColumnEmptyTasks">
+                            Empty
+                        </div>
+                    )}
+                    <ListGroup>
+                        {children}
+                    </ListGroup>
+                </Card.Body>
             </Card>
         </div>
     );

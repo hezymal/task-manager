@@ -6,16 +6,16 @@ export default function DeskAddColumnButton(props) {
     
     return (
         <div className="DeskColumn">
-            <Card border="none">
-                <Card.Header>
+            <Card border="light">
+                <Card.Body>
                     <Button 
                         block 
-                        variant="outline-secondary" 
+                        variant="outline-success" 
                         onClick={() => onAddColumn()}
                     >
                         Add column
                     </Button>
-                </Card.Header>
+                </Card.Body>
             </Card>
         </div>
     );

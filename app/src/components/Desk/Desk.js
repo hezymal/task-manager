@@ -6,6 +6,19 @@ import DeskTask from "./DeskTask";
 import DeskTaskEditor from "./DeskTaskEditor";
 import DeskAddColumnButton from "./DeskAddColumnButton";
 
+function getProgressValue(tasks, columnTasks) {
+    const columnTasksCount = columnTasks.length || 0;
+    const tasksCount = tasks.length || 0;
+
+    const progress = {
+        count: columnTasksCount,
+        totals: tasksCount,
+        value: Math.floor(columnTasksCount / tasksCount * 100),
+    };
+
+    return progress;
+}
+
 class Desk extends Component {
     constructor(props) {
         super(props);
@@ -68,11 +81,13 @@ class Desk extends Component {
             <div className="Desk">
                 {columns.byIndex.map(column => {
                     const columnTasks = tasks.byIndex.filter(task => task.columnId === column._id);
+                    const progress = getProgressValue(tasks.byIndex, columnTasks);
 
                     return (
                         <DeskColumn 
                             key={column._id}
                             column={column}
+                            progress={progress}
                             onModifyColumn={this.showColumnEditor} 
                             onRemoveColumn={removeColumn}
                             onAddTask={() => this.showTaskEditor(0, column._id)}
