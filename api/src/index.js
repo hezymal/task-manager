@@ -1,7 +1,21 @@
 const express = require('express');
-const app = express();
-const port = 3000;
+const bodyParser = require('body-parser');
+const routes = require("./routes");
+const config = require("./config.json");
+const db = require("./services/db");
 
-app.get('/', (req, res) => res.send('Hello World!'));
+async function run() {
+    const app = express();
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+    app.use(bodyParser.json());
+    app.set("api config", config);
+
+    routes.bind(app);
+    await db.create(app);
+
+    app.listen(config.server.port, () => {
+        console.log(`Service "api" listening on port: ${config.server.port}`);
+    });
+}
+
+run().catch(err => console.error(err));

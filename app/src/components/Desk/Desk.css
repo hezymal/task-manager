@@ -5,16 +5,17 @@
     white-space: nowrap;
     height: 100%;
 }
-    .DeskColumn {
-        display: inline-block;
-        margin: 0 10px 0 0;
-        min-width: 270px;
-        max-width: 270px;
-        vertical-align: top;
+
+.DeskColumn {
+    display: inline-block;
+    margin: 0 10px 0 0;
+    min-width: 270px;
+    max-width: 270px;
+    vertical-align: top;
+}
+    .DeskColumn:last-child {
+        margin: 0;
     }
-        .DeskColumn:last-child {
-            margin: 0;
-        }
         
 .Header {
     display: flex;

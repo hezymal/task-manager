@@ -1,149 +1,73 @@
 import React, { Component } from "react";
-import { DropdownButton, Dropdown, Modal, ButtonGroup, ListGroup, Card, Form, InputGroup, FormControl, Button, Container, Row, Col } from "react-bootstrap";
 import "./Desk.css";
+import DeskColumn from "./DeskColumn";
+import DeskColumnEditor from "./DeskColumnEditor";
+import { DeskTask } from "./DeskTask";
+import { DeskTaskEditor } from "./DeskTaskEditor";
+import { DeskAddColumnButton } from "./DeskAddColumnButton";
 
-function Header({ title, children }) {
-    return (
-        <div className="Header">
-            <div className="Header__Title">{title}</div>
-            <div className="Header__Controls">{children}</div>
-        </div>
-    );
-}
-
-function DeskColumn({ title, addTask, openOptions, children }) {
-    return (
-        <div className="DeskColumn">
-            <Card border="dark">
-                <Card.Header>
-                    <Header title={title}>
-                        <Dropdown as={ButtonGroup}>
-                            <Button 
-                                variant="outline-success"
-                                onClick={addTask}
-                            >
-                                <i className="fas fa-plus-circle" />
-                            </Button>
-                            <Dropdown.Toggle 
-                                variant="outline-secondary"
-                            >
-                                <i className="fas fa-cog" />
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                <Dropdown.Item eventKey="1">Delete</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </Header>
-                </Card.Header>
-                <ListGroup>
-                    {children}
-                </ListGroup>
-            </Card>
-        </div>
-    );
-}
-
-function DeskAddColumn() {
-    return (
-        <div className="DeskColumn">
-            <InputGroup>
-                <FormControl placeholder="Column name" />
-                <InputGroup.Append>
-                    <Button variant="outline-success">
-                        <i className="fas fa-plus-circle" />
-                    </Button>
-                </InputGroup.Append>
-            </InputGroup>
-        </div>
-    );
-}
-
-function DeskTask({ title, edit }) {
-    return (
-        <ListGroup.Item>
-            <Header title={title}>
-                <ButtonGroup>
-                    <Button 
-                        variant="outline-success"
-                        onClick={edit}
-                    >
-                        <i className="fas fa-pen" />
-                    </Button>
-                </ButtonGroup>
-            </Header>
-        </ListGroup.Item>
-    );
-}
-
-function DeskTaskEditor({ hide }) {
-    return (
-        <Modal show centered onHide={hide}>
-            <Modal.Header closeButton>
-                <Modal.Title>Task #1</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                Woohoo, you're reading this text in a modal!
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary">
-                    Close
-                </Button>
-                <Button variant="primary">
-                    Save Changes
-                </Button>
-            </Modal.Footer>
-        </Modal>
-    );
+function newEditorState() {
+    return {
+        show: false,
+        id: 0,
+    };
 }
 
 class Desk extends Component {
     constructor(props) {
         super(props);
 
-        this.editTask = this.editTask.bind(this);
+        this.toggleColumnEditor = this.toggleEditor.bind(this, "columnEditor");
 
         this.state = {
-            tasks: [
-                { id: 1, title: "Task #1" },
-                { id: 2, title: "Task #2" },
-                { id: 3, title: "Task #3" },
-                { id: 4, title: "Task #4" },
-                { id: 5, title: "Task #5" },
-            ],
-            showTaskEditor: false,
+            columnEditor: newEditorState(),
+            taskEditor: newEditorState(),
         };
     }
 
-    editTask(show) {
-        this.setState({ showTaskEditor: show });
+    componentDidMount() {
+        this.props.fetchColumnList();
+    }
+
+    toggleEditor(editorKey, show, id = 0) {
+        this.setState({
+            [editorKey]: { show, id }
+        });
     }
 
     render() {
-        const { showTaskEditor, tasks } = this.state;
+        const { columnEditor } = this.state;
+        const { columns, addColumn, modifyColumn, removeColumn } = this.props;
 
         return (
             <div className="Desk">
-                <DeskColumn
-                    title="Column #1"
-                    addTask={() => this.editTask(true)}
-                    openOptions={() => {}}
-                >
-                    {tasks.map(task => 
-                        <DeskTask 
-                            key={task.id} 
-                            title={task.title}
-                            edit={() => this.editTask(true)}
-                        />
-                    )}
-                </DeskColumn>
-
-                <DeskAddColumn />
-
-                {showTaskEditor && (
-                    <DeskTaskEditor 
-                        hide={() => this.editTask(false)} 
+                {columns.byIndex.map(column =>
+                    <DeskColumn 
+                        key={column._id}
+                        column={column}
+                        onModifyColumn={(columnId) => this.toggleColumnEditor(true, columnId)} 
+                        onRemoveColumn={removeColumn}
+                        onAddTask={() => {}}
                     />
                 )}
+
+                <DeskAddColumnButton 
+                    onAddColumn={() => this.toggleColumnEditor(true)} 
+                />
+                
+                {columnEditor.show && (
+                    <DeskColumnEditor
+                        column={columnEditor.id ? columns.byIndex[columns.indexes[columnEditor.id]] : null}
+                        onSubmit={columnEditor.id ? modifyColumn : addColumn}
+                        onCancel={() => this.toggleColumnEditor(false)}
+                    />
+                )}
+
+                {/* {taskEditorShowed && (
+                    <DeskTaskEditor 
+                        hide={() => this.setState({ taskEditorShowed: true })}
+                    />
+                )} */}
             </div>
         );
     }
