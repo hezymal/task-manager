@@ -48,7 +48,7 @@ export default class DeskColumnEditor extends Component {
             <Modal 
                 show 
                 centered 
-                onHide={onCancel}
+                onHide={() => onCancel()}
             >
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -68,7 +68,7 @@ export default class DeskColumnEditor extends Component {
                                 type="text"
                                 value={column.title}
                                 onChange={this.changeColumn} 
-                                placeholder="This is write column title"
+                                placeholder="Enter the column title"
                             />
                         </Form.Group>
                     </Form>
@@ -81,7 +81,7 @@ export default class DeskColumnEditor extends Component {
                     >
                         Submit
                     </Button>
-                    <Button variant="secondary" onClick={onCancel}>
+                    <Button variant="secondary" onClick={() => onCancel()}>
                         Cancel
                     </Button>
                 </Modal.Footer>

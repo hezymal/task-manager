@@ -1,14 +1,14 @@
 const ObjectID = require("mongodb").ObjectID;
 const { dbKey } = require("../constants/appKeys");
-const { columnsKey } = require("../constants/documentsKeys");
+const { tasksKey } = require("../constants/documentsKeys");
 
 async function add(req, res) {
     const db = req.app.get(dbKey);
-    const columns = db.collection(columnsKey);
-    const column = req.body;
+    const tasks = db.collection(tasksKey);
+    const newTask = req.body;
     
-    const { insertedId } = await columns.insertOne(column);
-    const payload = { ...column, id: insertedId };
+    const { insertedId } = await tasks.insertOne(newTask);
+    const payload = { ...newTask, id: insertedId };
 
     res.json({
         payload, 
@@ -18,25 +18,25 @@ async function add(req, res) {
 
 async function modify(req, res) {
     const db = req.app.get(dbKey);
-    const columns = db.collection(columnsKey);
-    const column = req.body;
+    const tasks = db.collection(tasksKey);
+    const task = req.body;
     
-    await columns.updateOne(
-        { _id: column._id }, 
-        { $set: column }
+    await tasks.updateOne(
+        { _id: task._id }, 
+        { $set: task }
     );
     
     res.json({
-        payload: column, 
+        payload: task, 
         error: false,
     });
 }
 
 async function list(req, res) {
     const db = req.app.get(dbKey);
-    const columns = db.collection(columnsKey);
+    const tasks = db.collection(tasksKey);
     
-    const payload = await columns.find({}).toArray();
+    const payload = await tasks.find({}).toArray();
 
     res.json({
         payload, 
@@ -45,14 +45,14 @@ async function list(req, res) {
 }
 
 async function remove(req, res) {
-    const columnId = req.params.id;
+    const taskId = req.params.id;
     const db = req.app.get(dbKey);
-    const columns = db.collection(columnsKey);
+    const tasks = db.collection(tasksKey);
 
-    await columns.deleteOne({ _id: ObjectID(columnId) });
+    await tasks.deleteOne({ _id: ObjectID(taskId) });
     
     res.json({
-        payload: columnId,
+        payload: taskId,
         error: false,
     });
 }

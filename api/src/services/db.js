@@ -1,12 +1,13 @@
 const MongoClient = require('mongodb').MongoClient;
+const { dbClientKey, dbKey, configKey } = require("../constants/appKeys");
 
 async function create(app) {
-    const config = app.get("api config");
+    const config = app.get(configKey);
     const client = await MongoClient.connect(config.db.url);
     const db = client.db(config.db.name);
 
-    app.set("api db client", client);
-    app.set("api db", db);
+    app.set(dbClientKey, client);
+    app.set(dbKey, db);
 }
 
 exports.create = create;

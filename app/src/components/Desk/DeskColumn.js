@@ -17,7 +17,7 @@ export default function DeskColumn(props) {
                 <Card.Header>
                     <Header title={column.title}>
                         <Dropdown as={ButtonGroup}>
-                            <Button variant="outline-success" onClick={onAddTask}>
+                            <Button variant="outline-success" onClick={() => onAddTask()}>
                                 <i className="fas fa-plus-circle" />
                             </Button>
                             <Dropdown.Toggle variant="outline-secondary">

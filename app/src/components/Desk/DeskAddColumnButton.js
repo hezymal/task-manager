@@ -1,14 +1,22 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
-export function DeskAddColumnButton(props) {
+
+export default function DeskAddColumnButton(props) {
     const { onAddColumn } = props;
-    return (<div className="DeskColumn">
-        <Card border="none">
-            <Card.Header>
-                <Button variant="outline-success" block onClick={onAddColumn}>
-                    Add column
+    
+    return (
+        <div className="DeskColumn">
+            <Card border="none">
+                <Card.Header>
+                    <Button 
+                        block 
+                        variant="outline-success" 
+                        onClick={() => onAddColumn()}
+                    >
+                        Add column
                     </Button>
-            </Card.Header>
-        </Card>
-    </div>);
+                </Card.Header>
+            </Card>
+        </div>
+    );
 }

@@ -9,11 +9,11 @@ class App extends Component {
 			<div className="App">
 				<div className="AppNav">
 					<Navbar bg="dark" variant="dark" expand="lg">
-						<Navbar.Brand href="#home">Task Manager</Navbar.Brand>
+						<Navbar.Brand href="#desk">Task Manager</Navbar.Brand>
 						<Navbar.Toggle aria-controls="basic-navbar-nav" />
 						<Navbar.Collapse id="basic-navbar-nav">
 							<Nav className="mr-auto">
-								<Nav.Link href="#home">Tasks</Nav.Link>
+								<Nav.Link href="#desk">Desk</Nav.Link>
 							</Nav>
 						</Navbar.Collapse>
 					</Navbar>

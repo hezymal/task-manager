@@ -1,5 +1,5 @@
 import { ADD, FETCH_LIST, MODIFY, REMOVE } from "constants/actionTypes";
-import { columnKey } from "constants/dataKeys";
+import { columnKey, taskKey } from "constants/dataKeys";
 
 export function addColumn(column) {
     return {
@@ -25,5 +25,32 @@ export function removeColumn(columnId) {
 export function fetchColumnList() {
     return { 
         type: `${columnKey}.${FETCH_LIST}`,
+    };
+}
+
+export function addTask(task) {
+    return {
+        type: `${taskKey}.${ADD}`,
+        payload: task,
+    };
+}
+
+export function modifyTask(task) {
+    return {
+        type: `${taskKey}.${MODIFY}`,
+        payload: task,
+    };
+}
+
+export function removeTask(taskId) {
+    return {
+        type: `${taskKey}.${REMOVE}`,
+        payload: taskId,
+    };
+}
+
+export function fetchTaskList() {
+    return { 
+        type: `${taskKey}.${FETCH_LIST}`,
     };
 }

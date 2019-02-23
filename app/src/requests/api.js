@@ -15,3 +15,19 @@ export function removeColumn(columnId) {
 export function fetchColumnList() {
     return axios.get("/column/list");
 }
+
+export function addTask(newTask) {
+    return axios.post("/task/add", newTask);
+}
+
+export function modifyTask(task) {
+    return axios.put("/task/modify", task);
+}
+
+export function removeTask(taskId) {
+    return axios.delete(`/task/remove/${taskId}`);
+}
+
+export function fetchTaskList() {
+    return axios.get("/task/list");
+}

@@ -3,12 +3,13 @@ const bodyParser = require('body-parser');
 const routes = require("./routes");
 const config = require("./config.json");
 const db = require("./services/db");
+const { configKey } = require("./constants/appKeys");
 
 async function run() {
     const app = express();
 
     app.use(bodyParser.json());
-    app.set("api config", config);
+    app.set(configKey, config);
 
     routes.bind(app);
     await db.create(app);

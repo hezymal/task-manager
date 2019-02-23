@@ -2,72 +2,113 @@ import React, { Component } from "react";
 import "./Desk.css";
 import DeskColumn from "./DeskColumn";
 import DeskColumnEditor from "./DeskColumnEditor";
-import { DeskTask } from "./DeskTask";
-import { DeskTaskEditor } from "./DeskTaskEditor";
-import { DeskAddColumnButton } from "./DeskAddColumnButton";
-
-function newEditorState() {
-    return {
-        show: false,
-        id: 0,
-    };
-}
+import DeskTask from "./DeskTask";
+import DeskTaskEditor from "./DeskTaskEditor";
+import DeskAddColumnButton from "./DeskAddColumnButton";
 
 class Desk extends Component {
     constructor(props) {
         super(props);
 
-        this.toggleColumnEditor = this.toggleEditor.bind(this, "columnEditor");
+        this.showColumnEditor = this.toggleColumnEditor.bind(this, true);
+        this.hideColumnEditor = this.toggleColumnEditor.bind(this, false);
+
+        this.showTaskEditor = this.toggleTaskEditor.bind(this, true);
+        this.hideTaskEditor = this.toggleTaskEditor.bind(this, false);
 
         this.state = {
-            columnEditor: newEditorState(),
-            taskEditor: newEditorState(),
+            columnEditor: {
+                show: false,
+                columnId: 0,
+            },
+            taskEditor: {
+                show: false,
+                taskId: 0,
+                columnId: 0,
+            },
         };
     }
 
     componentDidMount() {
         this.props.fetchColumnList();
+        this.props.fetchTaskList();
     }
 
-    toggleEditor(editorKey, show, id = 0) {
+    toggleColumnEditor(show, columnId = 0) {
         this.setState({
-            [editorKey]: { show, id }
+            columnEditor: { show, columnId }
+        });
+    }
+
+    toggleTaskEditor(show, taskId = 0, columnId = 0) {
+        this.setState({
+            taskEditor: { show, taskId, columnId }
         });
     }
 
     render() {
-        const { columnEditor } = this.state;
-        const { columns, addColumn, modifyColumn, removeColumn } = this.props;
+        const { 
+            columnEditor, 
+            taskEditor, 
+        } = this.state;
+
+        const { 
+            columns, 
+            addColumn, 
+            modifyColumn, 
+            removeColumn,
+
+            tasks,
+            addTask,
+            modifyTask,
+            removeTask,
+        } = this.props;
 
         return (
             <div className="Desk">
-                {columns.byIndex.map(column =>
-                    <DeskColumn 
-                        key={column._id}
-                        column={column}
-                        onModifyColumn={(columnId) => this.toggleColumnEditor(true, columnId)} 
-                        onRemoveColumn={removeColumn}
-                        onAddTask={() => {}}
-                    />
-                )}
+                {columns.byIndex.map(column => {
+                    const columnTasks = tasks.byIndex.filter(task => task.columnId === column._id);
+
+                    return (
+                        <DeskColumn 
+                            key={column._id}
+                            column={column}
+                            onModifyColumn={this.showColumnEditor} 
+                            onRemoveColumn={removeColumn}
+                            onAddTask={() => this.showTaskEditor(0, column._id)}
+                        >
+                            {columnTasks.map(task => 
+                                <DeskTask
+                                    key={task._id}
+                                    task={task}
+                                    onModifyTask={this.showTaskEditor}
+                                    onRemoveTask={removeTask}
+                                />    
+                            )}
+                        </DeskColumn>
+                    );
+                })}
 
                 <DeskAddColumnButton 
-                    onAddColumn={() => this.toggleColumnEditor(true)} 
+                    onAddColumn={this.showColumnEditor} 
                 />
                 
                 {columnEditor.show && (
                     <DeskColumnEditor
-                        column={columnEditor.id ? columns.byIndex[columns.indexes[columnEditor.id]] : null}
-                        onSubmit={columnEditor.id ? modifyColumn : addColumn}
-                        onCancel={() => this.toggleColumnEditor(false)}
+                        column={columnEditor.columnId ? columns.byIndex[columns.indexes[columnEditor.columnId]] : null}
+                        onSubmit={columnEditor.columnId ? modifyColumn : addColumn}
+                        onCancel={this.hideColumnEditor}
                     />
                 )}
 
-                {/* {taskEditorShowed && (
+                {taskEditor.show && (
                     <DeskTaskEditor 
-                        hide={() => this.setState({ taskEditorShowed: true })}
+                        task={taskEditor.taskId ? tasks.byIndex[tasks.indexes[taskEditor.taskId]] : null}
+                        columnId={taskEditor.columnId}
+                        onSubmit={taskEditor.taskId ? modifyTask : addTask}
+                        onCancel={this.hideTaskEditor}
                     />
-                )} */}
+                )}
             </div>
         );
     }
