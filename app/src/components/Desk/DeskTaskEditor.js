@@ -5,6 +5,7 @@ function newTask(columnId) {
     return {
         columnId,
         title: "",
+        deadline: null,
     };
 }
 
@@ -32,13 +33,11 @@ export default class DeskTaskEditor extends Component {
         this.props.onCancel();
     }
 
-    changeTask(e) {
-        const newTitle = e.target.value;
-
+    changeTask(key, value) {
         this.setState({
             task: {
                 ...this.state.task,
-                title: newTitle,
+                [key]: value,
             },
         });
     }
@@ -64,8 +63,17 @@ export default class DeskTaskEditor extends Component {
                             <Form.Control 
                                 type="text"
                                 value={task.title}
-                                onChange={this.changeTask}
+                                onChange={e => this.changeTask("title", e.target.value)}
                                 placeholder="Enter the task title"
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Deadline</Form.Label>
+                            <Form.Control 
+                                type="datetime-local"
+                                value={task.deadline}
+                                onChange={e => this.changeTask("deadline", e.target.value)}
+                                placeholder="Enter the deadline"
                             />
                         </Form.Group>
                     </Form>
