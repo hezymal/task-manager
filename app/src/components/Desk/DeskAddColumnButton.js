@@ -10,7 +10,7 @@ export default function DeskAddColumnButton(props) {
                 <Card.Header>
                     <Button 
                         block 
-                        variant="outline-success" 
+                        variant="outline-secondary" 
                         onClick={() => onAddColumn()}
                     >
                         Add column

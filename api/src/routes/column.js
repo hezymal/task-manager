@@ -20,10 +20,11 @@ async function modify(req, res) {
     const db = req.app.get(dbKey);
     const columns = db.collection(columnsKey);
     const column = req.body;
+    const columnId = ObjectID(column._id);
     
     await columns.updateOne(
-        { _id: column._id }, 
-        { $set: column }
+        { _id: columnId }, 
+        { $set: { ...column, _id: columnId } }
     );
     
     res.json({
@@ -49,7 +50,9 @@ async function remove(req, res) {
     const db = req.app.get(dbKey);
     const columns = db.collection(columnsKey);
 
-    await columns.deleteOne({ _id: ObjectID(columnId) });
+    await columns.deleteOne(
+        { _id: ObjectID(columnId) }
+    );
     
     res.json({
         payload: columnId,

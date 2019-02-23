@@ -9,10 +9,10 @@ export default function DeskTask(props) {
         <ListGroup.Item>
             <Header title={task.title}>
                 <ButtonGroup>
-                    <Button variant="outline-success" onClick={() => onModifyTask(task._id)}>
+                    <Button variant="outline-secondary" onClick={() => onModifyTask(task._id)}>
                         <i className="fas fa-pen" />
                     </Button>
-                    <Button variant="outline-danger" onClick={() => onRemoveTask(task._id)}>
+                    <Button variant="outline-secondary" onClick={() => onRemoveTask(task._id)}>
                         <i className="fas fa-trash" />
                     </Button>
                 </ButtonGroup>

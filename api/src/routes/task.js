@@ -20,10 +20,11 @@ async function modify(req, res) {
     const db = req.app.get(dbKey);
     const tasks = db.collection(tasksKey);
     const task = req.body;
+    const taskId = ObjectID(task._id);
     
     await tasks.updateOne(
-        { _id: task._id }, 
-        { $set: task }
+        { _id: taskId }, 
+        { $set: { ...task, _id: taskId } }
     );
     
     res.json({

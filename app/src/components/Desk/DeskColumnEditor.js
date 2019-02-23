@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, Form, Modal, InputGroup } from "react-bootstrap";
 
 function newColumn() {
     return {
         title: "",
+        color: "#00ff00",
     };
 }
 
@@ -24,10 +25,10 @@ export default class DeskColumnEditor extends Component {
         };
     }
 
-    changeColumn(e) {
+    changeColumn(key, value) {
         const newColumn = {
             ...this.state.column,
-            title: e.target.value,
+            [key]: value,
         };
 
         this.setState({ column: newColumn });
@@ -53,7 +54,7 @@ export default class DeskColumnEditor extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title>
                         {column._id 
-                            ? `Modify ${column.title} column` 
+                            ? `Modify column: ${column.title}` 
                             : "Creating column"
                         }
                     </Modal.Title>
@@ -67,9 +68,27 @@ export default class DeskColumnEditor extends Component {
                             <Form.Control
                                 type="text"
                                 value={column.title}
-                                onChange={this.changeColumn} 
+                                onChange={e => this.changeColumn("title", e.target.value)} 
                                 placeholder="Enter the column title"
                             />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>
+                                Color
+                            </Form.Label>
+                            <InputGroup>
+                                <Form.Control
+                                    type="text"
+                                    value={column.color || "#00ff00"}
+                                    onChange={e => this.changeColumn("color", e.target.value)} 
+                                    placeholder="Enter the column color"
+                                />
+                                <InputGroup.Append>
+                                    <InputGroup.Text style={{ width: "40px", backgroundColor: column.color || "#00ff00" }}>
+                                        {" "}
+                                    </InputGroup.Text>
+                                </InputGroup.Append>
+                            </InputGroup>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

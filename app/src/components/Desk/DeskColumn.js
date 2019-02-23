@@ -15,9 +15,9 @@ export default function DeskColumn(props) {
         <div className="DeskColumn">
             <Card>
                 <Card.Header>
-                    <Header title={column.title}>
+                    <Header title={column.title} color={column.color}>
                         <Dropdown as={ButtonGroup}>
-                            <Button variant="outline-success" onClick={() => onAddTask()}>
+                            <Button variant="outline-secondary" onClick={() => onAddTask()}>
                                 <i className="fas fa-plus-circle" />
                             </Button>
                             <Dropdown.Toggle variant="outline-secondary">
