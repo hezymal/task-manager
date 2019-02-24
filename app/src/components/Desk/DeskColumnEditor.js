@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Form, Modal, InputGroup } from "react-bootstrap";
+import { Button, ButtonGroup, Form, Modal, InputGroup } from "react-bootstrap";
 
 function newColumn() {
     return {
@@ -93,16 +93,21 @@ export default class DeskColumnEditor extends Component {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button 
-                        variant="primary" 
-                        type="submit" 
-                        onClick={this.submitColumn}
-                    >
-                        Submit
-                    </Button>
-                    <Button variant="secondary" onClick={() => onCancel()}>
-                        Cancel
-                    </Button>
+                    <ButtonGroup>
+                        <Button 
+                            variant="primary" 
+                            type="submit" 
+                            onClick={this.submitColumn}
+                        >
+                            Submit
+                        </Button>
+                        <Button 
+                            variant="light"
+                            onClick={() => onCancel()}
+                        >
+                            Cancel
+                        </Button>
+                    </ButtonGroup>
                 </Modal.Footer>
             </Modal>
         );

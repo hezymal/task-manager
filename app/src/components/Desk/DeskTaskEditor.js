@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
+import { Button, ButtonGroup, Modal, Form, Col } from "react-bootstrap";
 
 function newTask(columnId) {
     return {
         columnId,
         title: "",
-        deadline: null,
+        description: "",
+        start: null,
+        end: null,
     };
 }
 
@@ -67,24 +69,52 @@ export default class DeskTaskEditor extends Component {
                                 placeholder="Enter the task title"
                             />
                         </Form.Group>
+                        <Form.Row>
+                            <Form.Group as={Col} xs="6">
+                                <Form.Label>Start date</Form.Label>
+                                <Form.Control 
+                                    type="datetime-local"
+                                    value={task.start}
+                                    onChange={e => this.changeTask("start", e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group as={Col} xs="6">
+                                <Form.Label>End date</Form.Label>
+                                <Form.Control 
+                                    type="datetime-local"
+                                    value={task.end}
+                                    onChange={e => this.changeTask("end", e.target.value)}
+                                />
+                            </Form.Group>
+                        </Form.Row>
                         <Form.Group>
-                            <Form.Label>Deadline</Form.Label>
+                            <Form.Label>Description</Form.Label>
                             <Form.Control 
-                                type="datetime-local"
-                                value={task.deadline}
-                                onChange={e => this.changeTask("deadline", e.target.value)}
-                                placeholder="Enter the deadline"
+                                as="textarea" 
+                                rows="3"
+                                value={task.description}
+                                onChange={e => this.changeTask("description", e.target.value)}
+                                placeholder="Enter the task description"
                             />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" type="submit" onClick={this.submitTask}>
-                        Submit
-                    </Button>
-                    <Button variant="secondary" onClick={() => onCancel()}>
-                        Cancel
-                    </Button>
+                    <ButtonGroup>
+                        <Button 
+                            type="submit"
+                            variant="primary" 
+                            onClick={this.submitTask}
+                        >
+                            Submit
+                        </Button>
+                        <Button 
+                            variant="light" 
+                            onClick={() => onCancel()}
+                        >
+                            Cancel
+                        </Button>
+                    </ButtonGroup>
                 </Modal.Footer>
             </Modal>
         );
