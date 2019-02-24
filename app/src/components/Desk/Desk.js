@@ -23,9 +23,12 @@ class Desk extends Component {
     constructor(props) {
         super(props);
 
+        this.onTaskDragStart = this.onTaskDragStart.bind(this);
+        this.onTaskDragEnd = this.onTaskDragEnd.bind(this);
+        this.onColumnDragEnter = this.onColumnDragEnter.bind(this);
+
         this.showColumnEditor = this.toggleColumnEditor.bind(this, true);
         this.hideColumnEditor = this.toggleColumnEditor.bind(this, false);
-
         this.showTaskEditor = this.toggleTaskEditor.bind(this, true);
         this.hideTaskEditor = this.toggleTaskEditor.bind(this, false);
 
@@ -39,6 +42,8 @@ class Desk extends Component {
                 taskId: 0,
                 columnId: 0,
             },
+            draggingTaskId: 0,
+            draggedColumnId: 0,
         };
     }
 
@@ -59,10 +64,38 @@ class Desk extends Component {
         });
     }
 
+    onTaskDragStart(taskId) {
+        this.setState({ draggingTaskId: taskId });
+    }
+
+    onTaskDragEnd() {
+        console.log("onTaskDragEnd");
+        const { draggingTaskId, draggedColumnId } = this.state;
+
+        if (draggingTaskId) {
+            this.props.changeTaskField(draggingTaskId, "columnId", draggedColumnId);
+
+            const tasks = this.props.tasks;
+            const taskIndex = tasks.indexes[draggingTaskId];
+            const task = { ...tasks.byIndex[taskIndex], columnId: draggedColumnId };
+    
+            this.props.modifyTask(task);
+            this.setState({ draggingTaskId: 0, draggedColumnId: 0 });
+        }
+    }
+
+    onColumnDragEnter(columnId) {
+        console.log("onColumnDragEnter");
+
+        this.setState({ draggedColumnId: columnId });
+    }
+
     render() {
         const { 
             columnEditor, 
             taskEditor, 
+            draggedColumnId,
+            draggingTaskId,
         } = this.state;
 
         const { 
@@ -82,6 +115,7 @@ class Desk extends Component {
                 {columns.byIndex.map(column => {
                     const columnTasks = tasks.byIndex.filter(task => task.columnId === column._id);
                     const progress = getProgressValue(tasks.byIndex, columnTasks);
+                    const draggingTask = draggingTaskId ? tasks.byIndex[tasks.indexes[draggingTaskId]] : null;
 
                     return (
                         <DeskColumn 
@@ -91,14 +125,27 @@ class Desk extends Component {
                             onModifyColumn={this.showColumnEditor} 
                             onRemoveColumn={removeColumn}
                             onAddTask={() => this.showTaskEditor(0, column._id)}
+                            onDragEnter={this.onColumnDragEnter}
                         >
                             {columnTasks.map(task => 
                                 <DeskTask
                                     key={task._id}
                                     task={task}
+                                    dragging={task._id === draggingTaskId}
                                     onModifyTask={this.showTaskEditor}
                                     onRemoveTask={removeTask}
+                                    onDragStart={this.onTaskDragStart}
+                                    onDragEnd={this.onTaskDragEnd}
                                 />    
+                            )}
+                            {draggingTask && 
+                            draggedColumnId === column._id && 
+                            draggedColumnId !== draggingTask.columnId && (
+                                <DeskTask
+                                    key="dragging"
+                                    task={draggingTask}
+                                    dragging
+                                />
                             )}
                         </DeskColumn>
                     );

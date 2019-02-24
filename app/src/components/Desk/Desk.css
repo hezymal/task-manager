@@ -40,3 +40,12 @@
         padding: 10px 0;
         color: #aaaaaa;
     }
+
+.list-group-item.DeskTask_Dragging {
+    color: #a0c6e6;
+    border-color: #a0c6e6;
+    border-style: dotted;
+}
+    .list-group-item.DeskTask_Dragging .btn-light {
+        color: #a0c6e6;
+    }

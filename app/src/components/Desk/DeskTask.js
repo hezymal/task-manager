@@ -3,10 +3,22 @@ import { Button, ButtonGroup, OverlayTrigger, Popover, ListGroup, ButtonToolbar 
 import { Header } from "./Header";
 
 export default function DeskTask(props) {
-    const { task, onModifyTask, onRemoveTask } = props;
+    const { 
+        task, 
+        dragging,
+        onModifyTask, 
+        onRemoveTask,
+        onDragStart,
+        onDragEnd,
+    } = props;
 
     return (
-        <ListGroup.Item>
+        <ListGroup.Item 
+            draggable
+            className={dragging ? "DeskTask_Dragging" : ""}
+            onDragStart={() => onDragStart(task._id)}
+            onDragEnd={() => onDragEnd(task._id)}
+        >
             <Header title={task.title}>
                 <OverlayTrigger 
                     trigger="click" 

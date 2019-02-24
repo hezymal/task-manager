@@ -6,3 +6,4 @@ export const REMOVE = "REMOVE";
 export const REMOVED = "REMOVED";
 export const FETCH_LIST = "FETCH_LIST";
 export const FETCHED_LIST = "FETCHED_LIST";
+export const CHANGE = "CHANGE";

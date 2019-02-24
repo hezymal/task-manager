@@ -1,4 +1,4 @@
-import { ADDED, FETCHED_LIST, REMOVED, MODIFIED } from "constants/actionTypes";
+import { ADDED, FETCHED_LIST, REMOVED, MODIFIED, CHANGE } from "constants/actionTypes";
 import { taskKey } from "constants/dataKeys";
 
 function newState() {
@@ -32,6 +32,18 @@ function exceptById(tasks, taskId) {
     return tasks.reduce((result, tsk) => {
         if (tsk._id !== taskId) {
             result.push(tsk);
+        }
+
+        return result;
+    }, []);
+}
+
+function changeFieldByTask(tasks, taskId, key, value) {
+    return tasks.reduce((result, task) => {
+        if (task._id === taskId) {
+            result.push({ ...task, [key]: value });
+        } else {
+            result.push(task);
         }
 
         return result;
@@ -76,6 +88,21 @@ function reducer(state, action) {
                 byIndex: tasks,
                 indexes: buildIndexes(tasks),
             };
+        }
+
+        case `${taskKey}.${CHANGE}`: {
+            const { taskId, key, value } = action.payload;
+            const indexes = state.indexes;
+            const changedTask = state.byIndex[indexes[taskId]];
+
+            if (changedTask[key] !== value) {
+                return {
+                    byIndex: changeFieldByTask(state.byIndex, taskId, key, value),
+                    indexes,
+                };
+            } else {
+                return state;
+            }
         }
 
         default:

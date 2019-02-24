@@ -10,6 +10,7 @@ export default function DeskColumn(props) {
         onAddTask, 
         onModifyColumn,
         onRemoveColumn,
+        onDragEnter,
     } = props;
 
     return (
@@ -57,7 +58,9 @@ export default function DeskColumn(props) {
                         </ButtonGroup>
                     </Header>
                 </Card.Header>
-                <Card.Body>
+                <Card.Body 
+                    onDragEnter={() => onDragEnter(column._id)}
+                >
                     {progress.value ? (
                         <ProgressBar>
                             <ProgressBar 
