@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Button, ButtonGroup, Modal, Form, Col } from "react-bootstrap";
+import { ListGroup, Button, ButtonGroup, Form, Col } from "react-bootstrap";
+import { Header } from "./Header";
 
 function newTask(columnId) {
     return {
@@ -49,16 +50,25 @@ export default class DeskTaskEditor extends Component {
         const { onCancel } = this.props;
 
         return (
-            <Modal show centered onHide={() => onCancel()}>
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        {task._id 
+            <ListGroup variant="flush">
+                <ListGroup.Item>
+                    <Header 
+                        title={task._id 
                             ? `Modify task: ${task.title}`
-                            : "Creating task"
-                        }
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                            : "Creating task"}
+                    >
+                        <ButtonGroup>
+                            <Button 
+                                variant="light"
+                                size="sm"
+                                onClick={() => onCancel()}
+                            >
+                                <i className="fas fa-times" />
+                            </Button>
+                        </ButtonGroup>
+                    </Header>
+                </ListGroup.Item>
+                <ListGroup.Item>
                     <Form onSubmit={this.submitTask}>
                         <Form.Group>
                             <Form.Label>Title</Form.Label>
@@ -98,25 +108,25 @@ export default class DeskTaskEditor extends Component {
                             />
                         </Form.Group>
                     </Form>
-                </Modal.Body>
-                <Modal.Footer>
+                </ListGroup.Item>
+                <ListGroup.Item>
                     <ButtonGroup>
                         <Button 
                             type="submit"
-                            variant="primary" 
+                            variant="outline-primary" 
                             onClick={this.submitTask}
                         >
                             Submit
                         </Button>
                         <Button 
-                            variant="light" 
+                            variant="outline-secondary" 
                             onClick={() => onCancel()}
                         >
                             Cancel
                         </Button>
                     </ButtonGroup>
-                </Modal.Footer>
-            </Modal>
+                </ListGroup.Item>
+            </ListGroup>
         );
     }
 }

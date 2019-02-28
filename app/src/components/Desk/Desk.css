@@ -1,12 +1,27 @@
 .Desk {
-    padding: 10px;
-    overflow-x: auto;
-    overflow-y: auto;
-    white-space: nowrap;
+    position: relative;
     height: 100%;
 }
+    .Desk__Content {
+        padding: 10px;
+        overflow-x: auto;
+        overflow-y: auto;
+        white-space: nowrap;
+        height: 100%;
+    }
+    .Desk__Sidebar {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 350px;
+        border-left: 1px solid #e0e0e0;
+        background-color: white;
+        height: 100%;
+        overflow-y: auto;
+    }
 
-.DeskColumn {
+.DeskColumn, 
+.DeskAddColumnButton {
     display: inline-block;
     margin: 0 10px 0 0;
     min-width: 350px;
@@ -22,11 +37,7 @@
         .DeskColumn .progress > .progress-bar {
             background-color: inherit;
         }
-    .DeskColumn .Header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+    
     .DeskColumn .DeskColumnModify {
         margin: 0 10px 0 0;
         color: #0088cc;
@@ -40,6 +51,15 @@
         padding: 10px 0;
         color: #aaaaaa;
     }
+    .DeskAddColumnButton {
+        margin: 10px;
+    }
+
+.Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
 .list-group-item.DeskTask_Dragging {
     color: #a0c6e6;

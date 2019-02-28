@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Button, ButtonGroup, Form, Modal, InputGroup } from "react-bootstrap";
+import { Button, ButtonGroup, Form, InputGroup, ListGroup } from "react-bootstrap";
+import { Header } from "./Header";
 
 function newColumn() {
     return {
@@ -44,22 +45,27 @@ export default class DeskColumnEditor extends Component {
     render() {
         const { column } = this.state;
         const { onCancel } = this.props;
-    
+
         return (
-            <Modal 
-                show 
-                centered 
-                onHide={() => onCancel()}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        {column._id 
-                            ? `Modify column: ${column.title}` 
-                            : "Creating column"
-                        }
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+            <ListGroup variant="flush">
+                <ListGroup.Item>
+                    <Header 
+                        title={column._id 
+                            ? `Modify column: ${column.title}`
+                            : "Creating column"}
+                    >
+                        <ButtonGroup>
+                            <Button 
+                                variant="light"
+                                size="sm"
+                                onClick={() => onCancel()}
+                            >
+                                <i className="fas fa-times" />
+                            </Button>
+                        </ButtonGroup>
+                    </Header>
+                </ListGroup.Item>
+                <ListGroup.Item>
                     <Form onSubmit={this.submitColumn}>
                         <Form.Group>
                             <Form.Label>
@@ -91,25 +97,24 @@ export default class DeskColumnEditor extends Component {
                             </InputGroup>
                         </Form.Group>
                     </Form>
-                </Modal.Body>
-                <Modal.Footer>
+                </ListGroup.Item>
+                <ListGroup.Item>
                     <ButtonGroup>
                         <Button 
-                            variant="primary" 
-                            type="submit" 
+                            variant="outline-primary" 
                             onClick={this.submitColumn}
                         >
                             Submit
                         </Button>
                         <Button 
-                            variant="light"
+                            variant="outline-secondary" 
                             onClick={() => onCancel()}
                         >
                             Cancel
                         </Button>
                     </ButtonGroup>
-                </Modal.Footer>
-            </Modal>
+                </ListGroup.Item>
+            </ListGroup>
         );
     }
 }
